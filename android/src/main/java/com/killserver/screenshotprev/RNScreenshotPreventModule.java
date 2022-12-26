@@ -1,6 +1,7 @@
 
 package com.killserver.screenshotprev;
 
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -15,6 +16,7 @@ public class RNScreenshotPreventModule extends ReactContextBaseJavaModule {
   public RNScreenshotPreventModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
+    Log.d("RN-PREVENT", "constructor");
   }
 
   @Override
@@ -24,7 +26,9 @@ public class RNScreenshotPreventModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void enabled(boolean _enable) {
-    if(this.reactContext != null){
+    Log.d("RN-PREVENT", "inside enabled method");
+    if (this.reactContext.hasCurrentActivity()) {
+      Log.d("RN-PREVENT", "inside enabled method has current activity");
       if (_enable) {
         this.reactContext.getCurrentActivity().runOnUiThread(new Runnable() {
           @Override
@@ -40,6 +44,8 @@ public class RNScreenshotPreventModule extends ReactContextBaseJavaModule {
           }
         });
       }
+    } else {
+      Log.d("RN-PREVENT", "inside enabled method current activity NOT EXISTS");
     }
   }
 
